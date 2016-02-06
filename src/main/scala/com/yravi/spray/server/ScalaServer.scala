@@ -3,13 +3,24 @@ package com.yravi.spray.server
 import akka.actor.ActorSystem
 import com.yravi.spray.{MultiCrystalSilicon, Silicon}
 import spray.http.MediaTypes
-import spray.routing.SimpleRoutingApp
+import spray.routing.{Route, SimpleRoutingApp}
 
 object ScalaServer extends App with SimpleRoutingApp {
     implicit val actorSystem = ActorSystem()
 
     //changed val to var for now.
     var plentyOfSilicon = Silicon.silicons
+
+
+    def getJson(route: Route): Route = {
+    get{
+        respondWithMediaType(MediaTypes.`application/json`) {
+          route
+        }
+      }
+    }
+
+
 
     // starts a number of actors defined by spray
     // handle request routing and completing response
@@ -24,13 +35,11 @@ object ScalaServer extends App with SimpleRoutingApp {
           }
         }
       } ~ // ~ operator takes 2 routes and combines them. tries to feed context in 1st route, otherwise 2nd
-      get {
+      getJson {
         path("list" / "all"){
-          respondWithMediaType(MediaTypes.`application/json`){
             complete{
               Silicon.toJson(plentyOfSilicon)
             }
-          }
         }
       } ~
       get{
@@ -58,4 +67,8 @@ object ScalaServer extends App with SimpleRoutingApp {
       }
 
     }
+
+
+
+
   }
