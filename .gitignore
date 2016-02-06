@@ -1,0 +1,16 @@
+target
+.idea
+*.iml
+.DS_STORE
+.metadata
+src/int/gatling
+src/int/gatling-highcharts
+.project
+.settings/
+.classpath
+.cache
+/logs
+/bin/
+.sbtserver
+.sbtserver.lock
+buildinfo.properties
